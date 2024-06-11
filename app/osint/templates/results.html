@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+{% block titulo %}Profile Page{% endblock titulo %}
+{% block conteudo %}
+    {% if form.errors %}
+    <div class="alert alert-danger alert-dismissible" role="alert">
+        <div id="form_errors">
+            {% for key, value in form.errors.items %}
+                <strong>{{ value }}</strong>
+            {% endfor %}
+        </div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+    {% if messages %}
+    <div>
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <div class="content">
+        <!-- Animated -->
+        <div class="animated fadeIn">
+            <!-- Widgets  -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <h1>IntelligenceX</h1>
+                                    <h2 class="card-title">Resultados da Verificação de vazamento de dados para {{ email }}</h2>
+                                    {% if email_results is None %}
+                                        <p>Ocorreu um erro ao tentar verificar o email. Por favor, tente novamente.</p>
+                                    {% elif email_results %}
+                                        <p>O email foi encontrado nas seguintes ocorrências:</p>
+                                        <ul>
+                                            {% for result in email_results %}
+                                                <li>{{ result }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% else %}
+                                        <p>O email não foi encontrado em nenhuma ocorrência conhecida.</p>
+                                    {% endif %}
+                                </div>
+                                <div class="col-12 text-center">                    
+                                    <h2 class="card-title">Resultados da Verificação de vazamento de dados para {{ domain }}</h2>
+                                    {% if domain_results is None %}
+                                        <p>Ocorreu um erro ao tentar verificar o dominio. Por favor, tente novamente.</p>
+                                    {% elif domain_results %}
+                                        <p>O Dominio foi encontrado nas seguintes ocorrências:</p>
+                                        <ul>
+                                            {% for result in domain_results %}
+                                                <li>{{ result }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% else %}
+                                        <p>O Dominio não foi encontrado em nenhuma ocorrência conhecida.</p>
+                                    {% endif %}
+                                </div>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="animated fadeIn">
+            <!-- Widgets  -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <h1 class="mt-5">Sender Policy Framework</h1>
+                                    <h2 class="card-title">Resultados da Verificação para {{ domain }}</h2>
+                                    {% if spf is None %}
+                                        <p>Ocorreu um erro ao tentar verificar o SPF. Por favor, tente novamente.</p>
+                                    {% elif spf %}
+                                        <p>Foi obtida a seguinte Informaçãor referente ao SPF:</p>
+                                        <ul>
+                                            {% for result in spf %}
+                                                <li>{{ result }}</li>
+                                            {% endfor %}
+                                        </ul>                                    
+                                    {% endif %}
+                                </div>                        
+                            </div>                
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="animated fadeIn">
+            <!-- Widgets  -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">                            
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <h1>Emails from company</h1>
+                                    <h2 class="card-title">Resultados da Verificação para {{ emp }}</h2>
+                                    {% if emp_result is None %}
+                                        <p>Ocorreu um erro ao tentar verificar os Emails. Por favor, tente novamente.</p>
+                                    {% elif emp_result %}
+                                        <p>Foi obtida a seguinte Informaçãor referente aos Emails:</p>
+                                        <ul>
+                                            {% for result in emp_result %}
+                                                <li>{{ result }}</li>
+                                            {% endfor %}
+                                        </ul>                                    
+                                    {% endif %}
+                                </div>                        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="animated fadeIn">
+            <!-- Widgets  -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">                            
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <h1>Shodan Searching</h1>
+                                    <h2 class="card-title">Resultados da Verificação para {{ shodan }}</h2>
+                                    {% if shodan_result is None %}
+                                        <p>Ocorreu um erro ao tentar verificar os Emails. Por favor, tente novamente.</p>
+                                    {% elif shodan_result %}
+                                        <h2>Foi obtido a seguinte informação</h2>
+                                         {{ shodan_result }}
+                                        <p>Total de resultados: {{ shodan_result.total }}</p>
+                                        <ul>
+                                            {% for result in shodan_result.matches %}
+                                                <li>
+                                                    <strong>IP:</strong> {{ result.ip_str }}<br>
+                                                    <strong>Port:</strong> {{ result.port }}<br>
+                                                    <strong>Hostnames:</strong> {{ result.hostnames|join:", " }}<br>
+                                                    <strong>Location:</strong> {{ result.location.city }}, {{ result.location.country_name }}<br>
+                                                    <strong>Data:</strong> {{ result.data }}<br>
+                                                    {% if result.os %}
+                                                        <strong>OS:</strong> {{ result.os }}<br>
+                                                    {% endif %}
+                                                    {% if result.vulns %}
+                                                        <strong>Vulnerabilities:</strong>
+                                                        <ul>
+                                                            {% for vuln in result.vulns %}
+                                                                <li>{{ vuln }}</li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    {% endif %}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                </div>                        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-inner bg-white">
+            <div class="row">
+                <div class="col-sm-6">
+                    Copyright &copy; SafeComp
+                </div>
+                
+            </div>
+        </div>
+    </footer>
+    <!-- /.site-footer -->
+</div>
+{% endblock conteudo %}

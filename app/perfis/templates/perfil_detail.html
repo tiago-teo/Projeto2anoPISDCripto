@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+Detalhe do Perfil
+{% endblock titulo %}
+
+
+{% block conteudo %}
+<h1>{{ perfil.nome }}</h1>
+<img src="{{ perfil.get_photo_url }}" alt="{{ perfil.nome }}">
+<p><a href="{{ perfil.curriculo.url }}">Download do Currículo</a></p>
+<a href="{% url 'perfil_list' %}">Voltar</a>
+{% endblock conteudo %}

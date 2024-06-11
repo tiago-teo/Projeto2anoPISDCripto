@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block titulo %}Profile Page{% endblock titulo %}
+{% block conteudo %}
+    {% if form.errors %}
+    <div class="alert alert-danger alert-dismissible" role="alert">
+        <div id="form_errors">
+            {% for key, value in form.errors.items %}
+                <strong>{{ value }}</strong>
+            {% endfor %}
+        </div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+    {% if messages %}
+    <div>
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <div class="content">
+        <!-- Animated -->
+        <div class="animated fadeIn">
+            <!-- Widgets  -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <h1>Historico</h1>
+                                    <table class="table">
+                                        <thead class="thead-dark">
+                                          <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Nome da Empresa</th>
+                                            <th scope="col">Nome de Colaborador(es)</th>
+                                            <th scope="col">Email(s)</th>
+                                            <th scope="col">Password(s)</th>
+                                            <th scope="col">Dominio</th>
+                                            <th scope="col">IP Adress</th>
+                                            <th scope="col">URL</th>
+                                            <th scope="col">Shodan Search</th>
+                                            <th scope="col">Results</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for s in search %}
+                                            <tr>
+                                                <th scope="row">{{ s.id }}</th>
+                                                <td>{{ s.nome_emp }}</td>
+                                                <td>{{ s.nome_colab }}</td>
+                                                <td>{{ s.emails }}</td>
+                                                <td>{{ s.passwd }}</td>
+                                                <td>{{ s.domain }}</td>
+                                                <td>{{ s.ipadd }}</td>
+                                                <td>{{ s.urls}}</td>
+                                                <td>{{ s.shodan_search}}</td>  
+                                                <td><a href="{% url 'history_results' user.id s.id %}">Results</td>                                              
+                                            </tr>                            
+                                            {% endfor %}
+                                        </tbody>
+                                      </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-inner bg-white">
+            <div class="row">
+                <div class="col-sm-6">
+                    Copyright &copy; SafeComp
+                </div>
+                
+            </div>
+        </div>
+    </footer>
+    <!-- /.site-footer -->
+</div>
+{% endblock conteudo %}

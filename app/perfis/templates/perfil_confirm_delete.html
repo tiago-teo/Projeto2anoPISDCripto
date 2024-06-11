@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+Confirmar Exclusão
+{% endblock titulo %}
+
+
+{% block conteudo %}
+<h1>Você tem certeza que deseja deletar {{ perfil.nome }}?</h1>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Sim, deletar</button>
+</form>
+<a href="{% url 'perfil_list' %}">Cancelar</a>
+{% endblock conteudo %}

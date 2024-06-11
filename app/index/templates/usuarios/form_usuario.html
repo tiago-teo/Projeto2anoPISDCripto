@@ -1,0 +1,51 @@
+{% extends 'base2.html' %}
+
+{% block titulo %}
+    Registo de Novo User
+{% endblock titulo %}
+
+{% block conteudo %}
+    {% load static %}
+    <div class="sufee-login d-flex align-content-center flex-wrap">
+        <div class="container">
+            <div class="login-content">
+                <div class="login-logo">
+                    <a href="index.html">
+                        <img class="align-content" src="{% static 'images/logo.png' %}" alt="">
+                    </a>
+                </div>
+                <div class="login-form">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {{form_usuario.username.errors}}
+                            <label>User Name</label>
+                            {{form_usuario.username}}
+                        </div>
+                        <div class="form-group">
+                            {{form_usuario.password1.errors}}
+                            <label>Senha: </label>
+                            {{form_usuario.password1}}
+                        </div>
+                        <div class="form-group">
+                            {{form_usuario.password2.errors}}
+                            <label>Confirmação de senha: </label>
+                            {{form_usuario.password2}}
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" required  oninvalid="this.setCustomValidity('You must agree to the terms and conditions')" oninput="setCustomValidity('')" class="form-check-input"> Agree the terms and policy
+                            </label>
+                        </div>
+                        <button type="submit" value="Cadastrar" class="btn btn-secondary btn-flat m-b-30 m-t-30">Register</button>
+                        <div class="register-link m-t-15 text-center">
+                            <p>Already have account ? <a href="{% url 'logar_usuario' %}"> Sign in</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+{% endblock conteudo %}
