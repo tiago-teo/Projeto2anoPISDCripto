@@ -3,6 +3,7 @@ from .models import Perfil
 from .forms import PerfilForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 
 def perfil_list(request):
@@ -33,6 +34,9 @@ def perfil_update(request, pk):
                 if not form.cleaned_data.get(field):
                     form.cleaned_data[field] = getattr(perfil, field)
             form.save()
+            user = get_object_or_404(User, pk=pk)
+            user.username = perfil.nome
+            user.save()
             messages.success(request, 'Your profile is updated successfully')
             form = PerfilForm()
             return render(request, 'perfil_form.html', {'form': form, 'perfil': perfil})
