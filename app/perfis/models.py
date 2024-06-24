@@ -3,21 +3,19 @@ from django.contrib.auth.models import User
 from PIL import Image
 from index.encrypt import decrypt
 
+#Define uma função para encaminhar o upload das fotos dos utilizadores
 def upload_place_pics(instance, filename):
     return "fotos/{user}/{filename}".format(user=instance.user, filename=filename)
 
-def upload_place_files(instance, filename):
-    return "curriculos/{user}/{filename}".format(user=instance.user, filename=filename)
-
+#Caso o utilizador não dê upload a foto, fica com a foto default
 def default_place_pics():
     return "fotos/nopic.png"
 
-def default_place_files():
-    return "curriculos/default.txt"
 
-
+#Define um modelo Perfil que armazena as informações sobre o utilizador
+#Define aind aos campos do perfil
 class Perfil(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, default=1)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, default=1) # Associa o id do utilizador ao id do perfil. Caso seja apagado o utilizador, o perfil é apagado também.
     nome = models.CharField(max_length=100, default="")
     foto = models.ImageField(upload_to=upload_place_pics, null=True, blank=True)
     intelx_api = models.CharField(max_length=5000, default="")
@@ -26,20 +24,14 @@ class Perfil(models.Model):
     
     @property
     def get_photo_url(self):
+        #para ir buscar a foto uploaded, ou caso não tenha, vai buscar a default
         if self.foto and hasattr(self.foto, 'url'):
             return self.foto.url
         else:
             return "/static/nopic.png"
 
-    def get_intelx_api(self):
-        return decrypt(self.intelx_api.encode())
-
-    def get_hunter_api(self):
-        return decrypt(self.hunter_api.encode())
-
-    def get_shodan_api(self):
-        return decrypt(self.shodan_api.encode())
-
+    #Guarda a imagem na base de dados e redimensiona a imagem do perfil para 
+    #um tamanho de 200x200, para que a foto não fique desformatada no site
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
@@ -52,7 +44,7 @@ class Perfil(models.Model):
                     img.thumbnail(new_img)
                     img.save(self.foto.path)
             except Exception as e:
-                # Handle the case where the image file is not accessible or any other error
+                #Caso a imagem não seja suportada
                 print(f"Error processing image: {e}")
 
     def __str__(self):

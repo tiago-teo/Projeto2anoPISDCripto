@@ -1,3 +1,12 @@
+
+#------------------------COMENTÁRIO NOSSO------------------------
+
+#Ficheiro da intelX para utilizar a chave API da intelX
+#Retirado https://github.com/IntelligenceX/SDK/blob/master/Python/intelx/intelxapi.py
+
+#------------------------COMENTÁRIO NOSSO------------------------
+
+
 #!/usr/bin/env python3
 
 import requests

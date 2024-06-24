@@ -100,7 +100,7 @@
 					target company websites, database leaks, lists of known vulnerabilities and employee information.</p>
 			</div>
 			<div class="col-lg-6">
-				<img class="img-fluid" src="{% static 'images/company/company-group-pic.jpg' %}">
+				<img class="img-fluid" src="{% static 'assets_corp/images/company/company-group-pic.png' %}">
 			</div>
 		</div>
 	</div>
@@ -111,23 +111,34 @@
 		<div class="row">
 			<div class="col-lg-4 col-sm-6 bg-primary">
 				<div class="block">
-					<i class="ion-erlenmeyer-flask text-white"></i>
+					<i class="ion-map text-white"></i>
 					<h3 class="text-white mb-3">User Friendly</h3>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe enim impedit repudiandae omnis est temporibus.</p>
+					<p>The system is designed to be compatible with various devices and browsers, addressing heterogeneity issues. Additionally, 
+						the client-server architecture with geo-replicated capabilities ensures that the service can grow according to demand, 
+						maintaining performance and availability even with an increase in the number of users.
+						These advantages make the service an essential tool for companies looking to improve their cybersecurity posture, providing
+						efficient, secure, and user-friendly management of critical information for the prevention and response to security incidents.</p>
 				</div>
 			</div>
 			<div class="col-lg-4 col-sm-6 bg-primary bg-primary-dark">
 				<div class="block">
-					<i class="ion-leaf text-white"></i>
+					<i class="ion-ios-information-outline text-white"></i>
 					<h3 class="text-white mb-3">Centralised Information</h3>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe enim impedit repudiandae omnis est temporibus.</p>
+					<p>The service automates the collection of relevant information from multiple sources through OSINT, centralizing all 
+						data on a single platform. This significantly reduces the time required to find useful information, allowing companies 
+						to focus their resources on mitigation and problem resolution actions instead of wasting time on manual data searches.
+						Reduction of Human Errors: Automation minimizes the possibility of human errors in data collection, ensuring that all 
+						relevant information is consistently and accurately captured and analyzed.</p>
 				</div>
 			</div>
 			<div class="col-lg-4 col-sm-12 bg-primary bg-primary-darker">
 				<div class="block">
-					<i class="ion-lightbulb text-white"></i>
-					<h3 class="text-white mb-3">Game Development</h3>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe enim impedit repudiandae omnis est temporibus.</p>
+					<i class="ion-gear-b text-white"></i>
+					<h3 class="text-white mb-3">Advanced Security and Incident Management</h3>
+					<p>The system includes advanced functionalities for detecting data leaks, allowing companies to be immediately alerted to 
+						any security breaches. This enables a quick response to mitigate damage and implement preventive measures.
+						Secure Information Storage: Using robust encryption techniques (SHA-256 for passwords and AES-256-CBC for sensitive data),
+						the service ensures that all stored information is protected against unauthorized access, guaranteeing data integrity and confidentiality.</p>
 				</div>
 			</div>
 		</div>
@@ -189,10 +200,9 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="block">
-					<h2 class="mb-3">We design delightful digital experiences.</h2>
-					<p>Read more about what we do and our philosophy of design. Judge for yourself The work and results <br> we’ve
-						achieved for other clients, and meet our highly experienced Team who just love to design.</p>
-					<a class="btn btn-main btn-solid-border" href="contact.html">Tell Us Your Story</a>
+					<h2 class="mb-3">Start searching, for everyone's safety!</h2>
+					<p>Pentest your company! <br></p>
+					<a class="btn btn-main btn-solid-border" href="{% url 'cadastrar_usuario'%}">Search Here!</a>
 				</div>
 			</div>
 		</div>
@@ -208,7 +218,6 @@
 					<ul>
 						<li><a href="{% url 'about'%}">About Us</a></li>
 						<li><a href="{% url 'service'%}">Service</a></li>
-						<li><a href="{% url 'service'%}">Pricing</a></li>
 					</ul>
 				</div>
 			</div>

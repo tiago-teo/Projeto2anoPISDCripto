@@ -45,6 +45,7 @@
                                             <th scope="col">IP Adress</th>
                                             <th scope="col">URL</th>
                                             <th scope="col">Shodan Search</th>
+                                            <th scope="col">Google Search</th>
                                             <th scope="col">Results</th>
                                           </tr>
                                         </thead>
@@ -59,7 +60,8 @@
                                                 <td>{{ s.domain }}</td>
                                                 <td>{{ s.ipadd }}</td>
                                                 <td>{{ s.urls}}</td>
-                                                <td>{{ s.shodan_search}}</td>  
+                                                <td>{{ s.shodan_search}}</td> 
+                                                <td>{{ s.google_dork}}</td> 
                                                 <td><a href="{% url 'history_results' user.id s.id %}">Results</td>                                              
                                             </tr>                            
                                             {% endfor %}

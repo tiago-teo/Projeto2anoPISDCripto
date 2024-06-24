@@ -109,9 +109,36 @@
                                     {% if emp_result is None %}
                                         <p>Ocorreu um erro ao tentar verificar os Emails. Por favor, tente novamente.</p>
                                     {% elif emp_result %}
-                                        <p>Foi obtida a seguinte Informaçãor referente aos Emails:</p>
+                                        <p>Foi obtida a seguinte Informação referente aos Emails:</p>
                                         <ul>
                                             {% for result in emp_result %}
+                                                <li>{{ result }}</li>
+                                            {% endfor %}
+                                        </ul>                                    
+                                    {% endif %}
+                                </div>                        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="animated fadeIn">
+            <!-- Widgets  -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">                            
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <h1>Google Search</h1>
+                                    <h2 class="card-title">Termo de pesquisa: {{ gdork }}</h2>
+                                    {% if dork_result is None %}
+                                        <p>Ocorreu um erro ao tentar verificar os Emails. Por favor, tente novamente.</p>
+                                    {% elif dork_result %}
+                                        <p>Foram obtidos os seguintes sites:</p>
+                                        <ul>
+                                            {% for result in dork_result %}
                                                 <li>{{ result }}</li>
                                             {% endfor %}
                                         </ul>                                    

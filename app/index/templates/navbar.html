@@ -6,15 +6,15 @@
            <ul class="nav navbar-nav">
                
                <li class="active">
-                   <a href="{% url 'dashboard' user.id %}"><i class="menu-icon fa fa-laptop"></i>Menu Principal </a>
+                   <a href="{% url 'dashboard' user.id %}"><i class="menu-icon fa fa-laptop"></i>Main menu </a>
                </li>
 
-               <li class="menu-title">Recolha de Informação</li><!-- /.menu-title -->
+               <li class="menu-title">Information Gathering</li><!-- /.menu-title -->
                <li class="menu-item-has-children dropdown">
-                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon ti-search"></i>Procurar Informação</a>
+                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon ti-search"></i>Search for Information</a>
                    <ul class="sub-menu children dropdown-menu">                            
-                       <li><i class="ti-world"></i><a href="{% url 'search_form' user.id %}">Pesquisa</a></li>
-                       <li><i class="ti-list"></i><a href="{% url 'history' user.id %}">Historico de Pesquisa</a></li>
+                       <li><i class="ti-world"></i><a href="{% url 'search_form' user.id %}">Search</a></li>
+                       <li><i class="ti-list"></i><a href="{% url 'history' user.id %}">Search history</a></li>
                    </ul>
                </li>
 

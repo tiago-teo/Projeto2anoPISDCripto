@@ -4,6 +4,8 @@ from django.dispatch import receiver
 
 from .models import Perfil
 
+# Metodos para que quando for detetado o registo de um novo utilizador (signal) seja criado um perfil correspondente a esse utilizador. As informações deste utilizador 
+# podem ser atualizadas após o login
 
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):

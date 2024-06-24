@@ -6,25 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 
-def perfil_list(request):
-    perfis = Perfil.objects.all()
-    return render(request, 'perfil_list.html', {'perfis': perfis})
-
-def perfil_detail(request, pk):
-    perfil = get_object_or_404(Perfil, pk=pk)
-    return render(request, 'perfil_detail.html', {'perfil': perfil})
-
-def perfil_create(request):
-    if request.method == "POST":
-        form = PerfilForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('perfil_list')
-    else:
-        form = PerfilForm()
-    return render(request, 'perfil_form.html', {'form': form})
-
-
+#View que cria uma instância do formulário para atualizar o perfil com a PK(Primary Key) fornecida. O Perfil é criado automaticamente com o registo de utilizador
 def perfil_update(request, pk):
     perfil = get_object_or_404(Perfil, pk=pk)
     if request.method == "POST":
@@ -45,9 +27,4 @@ def perfil_update(request, pk):
         form = PerfilForm()
     return render(request, 'perfil_form.html', {'form': form, 'perfil': perfil})
 
-def perfil_delete(request, pk):
-    perfil = get_object_or_404(Perfil, pk=pk)
-    if request.method == "POST":
-        perfil.delete()
-        return redirect('perfil_list')
-    return render(request, 'perfil_confirm_delete.html', {'perfil': perfil})
+

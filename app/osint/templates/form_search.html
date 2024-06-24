@@ -36,8 +36,7 @@
                                     <div class="login-form ">
                                         <form method="post" enctype="multipart/form-data">
                                             {% csrf_token %}
-                                            <div class="form-group mt-5 col-6 offset-3">
-                                                
+                                            <div class="form-group mt-5 col-6 offset-3">                                                
                                                 {{form.as_p}}
                                             </div>
                                             <button type="submit" class="btn btn-secondary btn-flat m-b-30 m-t-30 col-2">Submit</button>

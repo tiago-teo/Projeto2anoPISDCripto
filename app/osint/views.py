@@ -10,11 +10,14 @@ from .forms import SearchForm
 import time, json, os, dns.resolver, requests, shodan
 from . import intelxapi
 from index.encrypt import decrypt
-
+from googlesearch import search as searching
+import time
 # Create your views here.
 
+#View para exibir o formulário de pesquisa
 @login_required(login_url='index')
 def search_form(request, pk):
+    #Obtém o perfil do utilizador autenticado pelo ID(pk)
     perfil = get_object_or_404(Perfil, pk=pk)
     perfis = Perfil.objects.all()
     if request.method == "POST":
@@ -22,11 +25,15 @@ def search_form(request, pk):
         if form.is_valid():
             search = form.save()
             messages.success(request, 'Searching...')
+            
+            #Obtém os dados do formulário
             email = form.cleaned_data['emails']
             domain = form.cleaned_data['domain']
             nome_emp = form.cleaned_data['nome_emp']
             shodan_search = form.cleaned_data['shodan_search']
+            gdork = form.cleaned_data['google_dork']
             
+            #-------------------------------------------------------INTELX-----------------------------------------------------------------
             # Faz a requisição à API "IntelX"
             if perfil.intelx_api is not None and perfil.intelx_api!="":
                 intelx_api_key = decrypt(perfil.intelx_api)
@@ -74,7 +81,7 @@ def search_form(request, pk):
                 save_result_domain = json.dumps(domain_results)
 
 
-    
+            #-------------------------------------------------------HUNTER.IO-----------------------------------------------------------------
             # Hunter.io API key
             if perfil.hunter_api is not None and perfil.hunter_api!="":
                 HUNTER_API_URL = 'https://api.hunter.io/v2/domain-search'
@@ -99,6 +106,7 @@ def search_form(request, pk):
                 emp_result=[]
                 emp_result_save = json.dumps(emp_result)
 
+            #-------------------------------------------------------SHODAN-----------------------------------------------------------------
             # Shodan API Key
             if perfil.shodan_api is not None and perfil.shodan_api!="":
                 SHODAN_API_KEY = decrypt(perfil.shodan_api)
@@ -118,7 +126,7 @@ def search_form(request, pk):
                 shodan_result = []
 
             
-            #--------------------------------------SPF--------------------------------------
+            #----------------------------------------------------------SPF------------------------------------------------------------------
             try:
                 respostas = dns.resolver.resolve(domain, 'TXT')
         
@@ -139,21 +147,48 @@ def search_form(request, pk):
                 spf_result_save = json.dumps(spf_result)
             
             
+            #-------------------------------------------------------------Google Dorks-------------------------------------------------
+            try:
+                dork = gdork
+                amount = 15
 
-            new = Result.objects.create(search=search, domain_leak=save_result_domain, email_leak=save_result, spf=spf_result_save, emp=emp_result_save, shodan=shodan_result)
-            return render(request, 'results.html', {'email_results': email_results, 'domain_results': domain_results, 'spf': spf_result, 'emp_result': emp_result, 'shodan_result': shodan_result, 'email': email, 'domain': domain, 'emp': nome_emp, 'shodan': shodan_search, 'user': request.user, 'perfil': perfil})
+                requ = 0
+                counter = 0
+                dork_results = []
+                for results in searching(dork, tld="com", lang="en", num=int(amount), start=0, stop=None, pause=2):
+                    counter = counter + 1                    
+                    dork_results.append(results)
+                    dork_result_save = json.dumps(dork_results)
+                    time.sleep(0.1)
+                    requ += 1
+                    if requ >= int(amount):
+                        break                    
+                    time.sleep(0.1)
+
+            except Exception as e:
+                print(f"Ocorreu um erro: {e}")
+                dork_result=[]
+                dork_result_save = json.dumps(dork_result)
+            
+            #Criação dos Resuldados e renderiza a página de resultados
+            new = Result.objects.create(search=search, domain_leak=save_result_domain, email_leak=save_result, spf=spf_result_save, emp=emp_result_save, shodan=shodan_result, dork=dork_result_save)
+            return render(request, 'results.html', {'email_results': email_results, 'domain_results': domain_results, 'spf': spf_result, 'emp_result': emp_result, 'shodan_result': shodan_result, 'dork_result': dork_results, 'email': email, 'domain': domain, 'emp': nome_emp, 'shodan': shodan_search, 'gdork': gdork, 'user': request.user, 'perfil': perfil})
             
     else:
         form = SearchForm()
     return render(request, 'form_search.html', {'user': request.user, 'form': form, 'perfil': perfil})
 
 
+
+#View para exibir os resultados da pesquisa
 @login_required(login_url='index')
 def results(request, pk):
     perfil = get_object_or_404(Perfil, pk=pk)
     perfis = Perfil.objects.all()
     return render(request, 'results.html', {'user': request.user, 'perfil': perfil})
 
+
+#View para exibir o histórico de pesquisa do utilizador
 @login_required(login_url='index')
 def history(request, pk):
     perfil = get_object_or_404(Perfil, pk=pk)
@@ -161,6 +196,8 @@ def history(request, pk):
     search = Search.objects.all()
     return render(request, 'history.html', {'user': request.user, 'perfil': perfil, 'search': search})
 
+
+#View para exibir os resultados detalhados de uma pesquisa em específico do histórico
 @login_required(login_url='index')
 def history_results(request, pk, id):
     perfil = get_object_or_404(Perfil, pk=pk)
@@ -173,5 +210,6 @@ def history_results(request, pk, id):
     spf_result = jsonDec.decode(results_model.spf)
     emp_results = jsonDec.decode(results_model.emp)
     shodan_result = jsonDec.decode(results_model.shodan)
-    return render(request, 'results.html', {'email_results': email_results, 'domain_results': domain_results, 'spf': spf_result, 'emp_result': emp_results, 'shodan_result': shodan_result, 'email':search.emails, 'domain':search.domain, 'emp': search.nome_emp, 'shodan': search.shodan_search, 'user': request.user, 'perfil': perfil, 'search': search})
+    dork_results = jsonDec.decode(results_model.dork)
+    return render(request, 'results.html', {'email_results': email_results, 'domain_results': domain_results, 'spf': spf_result, 'emp_result': emp_results, 'shodan_result': shodan_result, 'dork_result': dork_results, 'email':search.emails, 'domain':search.domain, 'emp': search.nome_emp, 'shodan': search.shodan_search, 'gdork': search.google_dork, 'user': request.user, 'perfil': perfil, 'search': search})
 
